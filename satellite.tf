@@ -12,9 +12,9 @@ data "ibm_satellite_attach_host_script" "script-controlplane" {
   depends_on      = [ibm_satellite_location.location]
   custom_script = <<EOF
 subscription-manager refresh
-subscription-manager release --set=8
-subscription-manager repos --enable rhel-8-for-x86_64-baseos-rpms 
-subscription-manager repos --enable rhel-8-for-x86_64-appstream-rpms
+subscription-manager release --set=9
+subscription-manager repos --enable rhel-9-for-x86_64-baseos-rpms 
+subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms
 subscription-manager repos --disable='*eus*'
 yum install container-selinux -y
 EOF
@@ -26,9 +26,9 @@ data "ibm_satellite_attach_host_script" "script-worker" {
   depends_on      = [ibm_satellite_location.location]
   custom_script = <<EOF
 subscription-manager refresh
-subscription-manager release --set=8
-subscription-manager repos --enable rhel-8-for-x86_64-baseos-rpms 
-subscription-manager repos --enable rhel-8-for-x86_64-appstream-rpms
+subscription-manager release --set=9
+subscription-manager repos --enable rhel-9-for-x86_64-baseos-rpms 
+subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms
 subscription-manager repos --disable='*eus*'
 yum install container-selinux -y
 EOF
@@ -40,9 +40,9 @@ data "ibm_satellite_attach_host_script" "script-storage" {
   depends_on      = [ibm_satellite_location.location]
   custom_script = <<EOF
 subscription-manager refresh
-subscription-manager release --set=8
-subscription-manager repos --enable rhel-8-for-x86_64-baseos-rpms 
-subscription-manager repos --enable rhel-8-for-x86_64-appstream-rpms
+subscription-manager release --set=9
+subscription-manager repos --enable rhel-9-for-x86_64-baseos-rpms 
+subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms
 subscription-manager repos --disable='*eus*'
 yum install container-selinux -y
 EOF
