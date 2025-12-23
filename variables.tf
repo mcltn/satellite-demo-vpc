@@ -81,7 +81,7 @@ variable "coreos_enabled" {
   default = "true"
 }
 
-variable "operating_system" {
+variable "location_operating_system" {
   default = "REDHAT_9_64"
 }
 

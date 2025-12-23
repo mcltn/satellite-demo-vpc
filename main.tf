@@ -18,14 +18,10 @@ locals {
 }
 
 resource "random_string" "project" {
-  length    = 8
+  length    = 5
   numeric   = true
   special   = false
   upper     = false
-}
-
-resource "ibm_iam_api_key" "iam_api_key" {
-  name = "sat-key-${local.PROJECT}"
 }
 
 resource "ibm_is_instance" "controlplane" {

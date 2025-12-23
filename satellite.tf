@@ -67,7 +67,7 @@ resource "ibm_satellite_cluster" "democluster" {
   wait_for_worker_update  = true
   worker_count            = 1
   host_labels             = ["host:worker"]
-  operating_system        = var.operating_system
+  operating_system        = var.location_operating_system
   depends_on      = [ibm_satellite_host.controlplane, ibm_is_instance.controlplane, ibm_is_instance.worker]
   dynamic "zones" {
     for_each = var.location_zones
@@ -76,53 +76,3 @@ resource "ibm_satellite_cluster" "democluster" {
     }
   }
 }
-
-#resource "ibm_satellite_cluster_worker_pool" "storage-pool" {
-#    name               = "storage-pool"
-#    cluster            = ibm_satellite_cluster.democluster.id
-#    worker_count       = var.storage_cluster_pool_count
-#    resource_group_id  = data.ibm_resource_group.satellite.id
-#    host_labels        = ["host:storage"]
-#    dynamic "zones" {
-#        for_each = var.location_zones
-#        content {
-#              id  = zones.value
-#        }
-#      }
-#}
-
-# resource "ibm_satellite_storage_configuration" "storage-configuration" {
-#     location = ibm_satellite_location.location.location
-#     config_name = "storage-config-${local.PROJECT}"
-#     storage_template_name = "storage-local"
-#     storage_template_version = "4.12"
-#     user_config_parameters = {
-#         auto-discover-devices = "true"
-#         osd-device-path = ""
-#         num-of-osd = "1"
-#         worker-nodes = "" #"${join(", ", [for i in ibm_is_instance.storage : i.name])}"
-#         storage-upgrade = "false"
-#         billing-type = "advanced"
-#         ibm-cos-endpoint = ""
-#         ibm-cos-location = ""
-#         ibm-cos-access-key = ""
-#         ibm-cos-secret-key = ""
-#         cluster-encryption = ""
-#         perform-cleanup = "false"
-#         kms-encryption = "false"
-#         kms-instance-name = ""
-#         kms-instance-id = ""
-#         kms-api-key = ""
-#         ignore-noobaa = "false"
-#     }
-#     user_secret_parameters = {
-#         iam-api-key = "${var.iam_api_key}"
-#     }
-# }
-
-#resource "ibm_satellite_storage_assignment" "storage-assignment" {
-#    assignment_name = "storage-assignment"
-#    cluster = ibm_satellite_cluster.democluster.id
-#    config = "storage-config-${var.project_name}"
-#    controller = ibm_satellite_location.location.location
-#}
