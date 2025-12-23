@@ -69,7 +69,7 @@ variable "worker_profile" {
 }
 
 variable "storage_profile" {
-  default = "bx2d-8x32" #bx2d-8x32 300gb / bx2d-16x64 600gb
+  default = "bx2d-16x64" #"bx2d-16x64" 600gb bx2d-8x32 300gb
   description = "Instance profile to be used for ODF/PX hosts"
 }
 
@@ -95,5 +95,5 @@ variable "cluster_name" {
 }
 
 variable "kube_version" {
-  default = "4.16_openshift"
+  default = "4.18_openshift"
 }
