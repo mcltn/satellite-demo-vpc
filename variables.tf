@@ -88,7 +88,7 @@ variable "operating_system" {
 
 variable "location_zones" {
   type = list(string)
-  default = ["us-south-1","us-south-2","us-south-3"]
+  default = ["zone-1","zone-2","zone-3"]
 }
 
 variable "location_managed_from" {
