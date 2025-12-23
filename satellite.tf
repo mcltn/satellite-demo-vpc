@@ -1,5 +1,5 @@
 resource "ibm_satellite_location" "location" {
-  location          = "${local.PREFIX}-${var.location_name}-${local.PROJECT}"
+  location          = "${var.location_name}-${local.PROJECT}"
   zones             = var.location_zones
   managed_from      = var.location_managed_from
   coreos_enabled    = var.coreos_enabled
@@ -59,7 +59,7 @@ resource "ibm_satellite_host" "controlplane" {
 }
 
 resource "ibm_satellite_cluster" "democluster" {
-  name                    = "${local.PREFIX}-${var.cluster_name}-${local.PROJECT}"
+  name                    = "${var.cluster_name}-${local.PROJECT}"
   location                = ibm_satellite_location.location.location
   enable_config_admin     = true
   kube_version            = var.kube_version
@@ -67,6 +67,7 @@ resource "ibm_satellite_cluster" "democluster" {
   wait_for_worker_update  = true
   worker_count            = 1
   host_labels             = ["host:worker"]
+  operating_system        = var.operating_system
   depends_on      = [ibm_satellite_host.controlplane, ibm_is_instance.controlplane, ibm_is_instance.worker]
   dynamic "zones" {
     for_each = var.location_zones

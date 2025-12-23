@@ -6,8 +6,8 @@ ibmcloud login --apikey $APIKEY -r $REGION -g $RESOURCEGROUP
 
 ### CONTROLPLANE
 printf "\nSET CONTROL PLANE DNS IPS\n\n"
-echo ibmcloud sat location dns register --location $LOCATION $(ibmcloud is instances | grep $PREFIX-controlplane-$PROJECT | awk '{print "--ip " $5}')
-ibmcloud sat location dns register --location $LOCATION $(ibmcloud is instances | grep $PREFIX-controlplane-$PROJECT | awk '{print "--ip " $5}')
+echo ibmcloud sat location dns register --location $LOCATION $(ibmcloud is instances | grep controlplane-$PROJECT | awk '{print "--ip " $5}')
+ibmcloud sat location dns register --location $LOCATION $(ibmcloud is instances | grep controlplane-$PROJECT | awk '{print "--ip " $5}')
 
 printf "\nGET NLB DNS HOSTNAME\n\n"
 NLBHOSTNAME=$(ibmcloud ks nlb-dns ls --cluster $CLUSTER | awk 'NR == 3 {print $1}')
@@ -29,7 +29,7 @@ done
 ibmcloud ks nlb-dns ls --cluster $CLUSTER
 
 printf "\nADD NLB DNS PUBLIC IPS\n"
-ibmcloud ks nlb-dns add --cluster $CLUSTER --nlb-host $NLBHOSTNAME $(ibmcloud is instances | grep $PREFIX-worker-$PROJECT | awk '{print "--ip " $5}')
+ibmcloud ks nlb-dns add --cluster $CLUSTER --nlb-host $NLBHOSTNAME $(ibmcloud is instances | grep worker-$PROJECT | awk '{print "--ip " $5}')
 
 sleep 10
 

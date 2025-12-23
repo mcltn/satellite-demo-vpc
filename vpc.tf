@@ -1,25 +1,25 @@
 resource "ibm_is_vpc" "sat-vpc" {
-  name = "${local.PREFIX}-${var.vpc_name}-${local.PROJECT}"
+  name = "${var.vpc_name}-${local.PROJECT}"
   address_prefix_management = "manual"
   resource_group = data.ibm_resource_group.satellite.id
 }
 
 resource "ibm_is_public_gateway" "pg1" {
-  name = "${local.PREFIX}-${var.vpc_name}-gw1-${local.PROJECT}"
+  name = "${var.vpc_name}-gw1-${local.PROJECT}"
   resource_group  = data.ibm_resource_group.satellite.id
   vpc  = ibm_is_vpc.sat-vpc.id
   zone = local.ZONE1
 }
 
 resource "ibm_is_vpc_address_prefix" "vpc-ap1" {
-  name = "${local.PREFIX}-${var.vpc_name}-ap1-${local.PROJECT}"
+  name = "${var.vpc_name}-ap1-${local.PROJECT}"
   zone = local.ZONE1
   vpc  = ibm_is_vpc.sat-vpc.id
   cidr = var.zone1_cidr
 }
 
 resource "ibm_is_subnet" "sn1" {
-  name            = "${local.PREFIX}-${var.vpc_name}-sn1-${local.PROJECT}"
+  name            = "${var.vpc_name}-sn1-${local.PROJECT}"
   resource_group  = data.ibm_resource_group.satellite.id
   vpc             = ibm_is_vpc.sat-vpc.id
   zone            = local.ZONE1

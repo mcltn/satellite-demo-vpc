@@ -15,7 +15,6 @@ locals {
   #ZONE2 = "${var.ibmcloud_region}-1"
   #ZONE3 = "${var.ibmcloud_region}-1"
   PROJECT = "${random_string.project.result}"
-  PREFIX = "wwts"
 }
 
 resource "random_string" "project" {
@@ -26,12 +25,12 @@ resource "random_string" "project" {
 }
 
 resource "ibm_iam_api_key" "iam_api_key" {
-  name = "${local.PREFIX}-key-${local.PROJECT}"
+  name = "sat-key-${local.PROJECT}"
 }
 
 resource "ibm_is_instance" "controlplane" {
   count = var.controlplane_count
-  name    = "${local.PREFIX}-controlplane-${local.PROJECT}${count.index+1}"
+  name    = "controlplane-${local.PROJECT}${count.index+1}"
   resource_group  = data.ibm_resource_group.satellite.id
   vpc  = ibm_is_vpc.sat-vpc.id
   zone = local.ZONE1
@@ -48,7 +47,7 @@ resource "ibm_is_instance" "controlplane" {
 
 resource "ibm_is_instance" "worker" {
   count = var.worker_count
-  name    = "${local.PREFIX}-worker-${local.PROJECT}${count.index+1}"
+  name    = "worker-${local.PROJECT}${count.index+1}"
   resource_group  = data.ibm_resource_group.satellite.id
   vpc  = ibm_is_vpc.sat-vpc.id
   zone = local.ZONE1
@@ -65,7 +64,7 @@ resource "ibm_is_instance" "worker" {
 
 resource "ibm_is_instance" "storage" {
   count = var.storage_count
-  name    = "${local.PREFIX}-storage-${local.PROJECT}${count.index+1}"
+  name    = "storage-${local.PROJECT}${count.index+1}"
   resource_group  = data.ibm_resource_group.satellite.id
   vpc  = ibm_is_vpc.sat-vpc.id
   zone = local.ZONE1
@@ -83,7 +82,7 @@ resource "ibm_is_instance" "storage" {
 
 resource "ibm_is_volume" "storage-mon-volume" {
   count = var.storage_count
-  name = "${local.PREFIX}-storagemon-${local.PROJECT}${count.index+1}"
+  name = "storagemon-${local.PROJECT}${count.index+1}"
   profile = "10iops-tier"
   capacity = 20
   resource_group  = data.ibm_resource_group.satellite.id
@@ -92,7 +91,7 @@ resource "ibm_is_volume" "storage-mon-volume" {
 
 resource "ibm_is_volume" "storage-osd-volume" {
   count = var.storage_count
-  name = "${local.PREFIX}-storageosd-${local.PROJECT}${count.index+1}"
+  name = "storageosd-${local.PROJECT}${count.index+1}"
   profile = "10iops-tier"
   capacity = 200
   resource_group  = data.ibm_resource_group.satellite.id
@@ -101,21 +100,21 @@ resource "ibm_is_volume" "storage-osd-volume" {
 
 resource "ibm_is_floating_ip" "fip-controlplane" {
   count = "${var.controlplane_count}"
-  name = "${local.PREFIX}-controlplane-${local.PROJECT}${count.index}"
+  name = "controlplane-${local.PROJECT}${count.index}"
   resource_group  = data.ibm_resource_group.satellite.id
   target = "${element(ibm_is_instance.controlplane.*.primary_network_interface.0.id, count.index)}"
 }
 
 resource "ibm_is_floating_ip" "fip-worker" {
   count = "${var.worker_count}"
-  name = "${local.PREFIX}-worker-${local.PROJECT}${count.index}"
+  name = "worker-${local.PROJECT}${count.index}"
   resource_group  = data.ibm_resource_group.satellite.id
   target = "${element(ibm_is_instance.worker.*.primary_network_interface.0.id, count.index)}"
 }
 
 resource "ibm_is_floating_ip" "fip-storage" {
   count = "${var.storage_count}"
-  name = "${local.PREFIX}-storage-${local.PROJECT}${count.index}"
+  name = "storage-${local.PROJECT}${count.index}"
   resource_group  = data.ibm_resource_group.satellite.id
   target = "${element(ibm_is_instance.storage.*.primary_network_interface.0.id, count.index)}"
 }
@@ -127,9 +126,8 @@ resource "terraform_data" "makepublic" {
       APIKEY =  ibm_iam_api_key.iam_api_key.apikey #"${var.iam_api_key}"
       REGION = "${var.ibmcloud_region}"
       RESOURCEGROUP = "${var.satellite_resource_group}"
-      LOCATION = "${local.PREFIX}-${var.location_name}-${local.PROJECT}"
-      CLUSTER = "${local.PREFIX}-${var.cluster_name}-${local.PROJECT}"
-      PREFIX = "${local.PREFIX}"
+      LOCATION = "${var.location_name}-${local.PROJECT}"
+      CLUSTER = "${var.cluster_name}-${local.PROJECT}"
       PROJECT = "${local.PROJECT}"
     }
   }

@@ -81,6 +81,11 @@ variable "coreos_enabled" {
   default = "true"
 }
 
+variable "operating_system" {
+  default = "REDHAT_9_64"
+}
+
+
 variable "location_zones" {
   type = list(string)
   default = ["us-south-1","us-south-2","us-south-3"]
