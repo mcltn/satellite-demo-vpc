@@ -54,8 +54,8 @@ variable "storage_cluster_pool_count" {
 }
  
 variable "image" {
-  default = "r006-119942e0-2023-42f4-bb46-83e3969e0867" #us-south
-  description = "OS Image ID to be used for virtual instances (RHEL 8 default)"
+  default = "r006-901f5e3c-13f7-48bf-8a8f-13101af22bea" #us-south
+  description = "OS Image ID to be used for virtual instances (RHEL 9 default)"
 }
 
 variable "controlplane_profile" {
