@@ -59,6 +59,7 @@ resource "ibm_satellite_host" "controlplane" {
 }
 
 resource "ibm_satellite_cluster" "democluster" {
+  count                   = var.create_cluster ? 1 : 0  # Create 1 if true, else 0
   name                    = "${var.cluster_name}-${local.PROJECT}"
   location                = ibm_satellite_location.location.location
   enable_config_admin     = true

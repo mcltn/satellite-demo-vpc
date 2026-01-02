@@ -95,6 +95,11 @@ variable "location_managed_from" {
   default = "dal"
 }
 
+variable "create_cluster" {
+  type = bool
+  default = false
+}
+
 variable "cluster_name" {
   default = "demo"
 }
