@@ -115,22 +115,6 @@ resource "ibm_is_floating_ip" "fip-storage" {
   target = "${element(ibm_is_instance.storage.*.primary_network_interface.0.id, count.index)}"
 }
 
-resource "terraform_data" "makepublic" {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/makepublic.sh"
-    environment = {
-      APIKEY =  "${var.iam_api_key}" #ibm_iam_api_key.iam_api_key.apikey
-      REGION = "${var.ibmcloud_region}"
-      RESOURCEGROUP = "${var.satellite_resource_group}"
-      LOCATION = "${var.location_name}-${local.PROJECT}"
-      CLUSTER = "${var.cluster_name}-${local.PROJECT}"
-      PROJECT = "${local.PROJECT}"
-    }
-  }
-  depends_on = [ ibm_satellite_cluster.democluster ]
-}
-
-
 output "controlplane" {
     #value = ibm_is_instance.controlplane.*.primary_network_interface.0.primary_ipv4_address
     value = "${ibm_is_floating_ip.fip-controlplane.*.address}"

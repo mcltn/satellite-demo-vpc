@@ -76,4 +76,15 @@ resource "ibm_satellite_cluster" "democluster" {
       id = zones.value
     }
   }
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/makepublic.sh"
+    environment = {
+      APIKEY =  "${var.iam_api_key}" #ibm_iam_api_key.iam_api_key.apikey
+      REGION = "${var.ibmcloud_region}"
+      RESOURCEGROUP = "${var.satellite_resource_group}"
+      LOCATION = "${var.location_name}-${local.PROJECT}"
+      CLUSTER = "${var.cluster_name}-${local.PROJECT}"
+      PROJECT = "${local.PROJECT}"
+    }
+  }
 }
